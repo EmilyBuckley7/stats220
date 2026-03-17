@@ -18,4 +18,4 @@ A little about me:
 
 One website I find useful is [GitHub](https://github.com/)
 
-A meme that captures how I currently feel about my university studies is ![Meme]([https://c.tenor.com/8druEACXtX8AAAAd/tenor.gif](https://tenor.com/view/peachy-yay-gif-13549661594629210334))
+A meme that captures how I currently feel about my university studies is ![]((https://tenor.com/view/peachy-yay-gif-13549661594629210334))
