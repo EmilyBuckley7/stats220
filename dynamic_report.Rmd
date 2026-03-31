@@ -1,0 +1,81 @@
+---
+title: My dynamic report
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+
+```
+
+```{css}
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+h2 {
+  color: #333333;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+```
+## Campus Drink Observations
+
+This dynamic report presents observational data on café-style drinks carried by people on campus. Each row represents one observation. The aim is to identify patterns in drink type, drink temperature, and the number of people carrying drinks.
+
+```{r}
+library(tidyverse)
+
+logged_data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vTjwOnsN_H0_VqjDTOfpu_-yEf_WJE3MCGNoaHukTPr7QHzzQxdUY29SoyEgweARQZs1WYMOWmsnrxa/pub?output=csv")
+
+latest_data <- logged_data %>%
+  rename(
+    drink_type = `What type of drink was observed?`,
+    drink_temp = `Was the drink hot or cold?`,
+    number_carrying = `How many people in the observed group were carrying a drink?`,
+    location = `Where was the observation made?`,
+    time_of_day = `What time of day was the observation made?`
+  )
+
+mean_people <- latest_data %>%
+  summarise(mean_people = mean(number_carrying, na.rm = TRUE)) %>%
+  pull(mean_people)
+
+max_people <- latest_data %>%
+  summarise(max_people = max(number_carrying, na.rm = TRUE)) %>%
+  pull(max_people)
+
+```
+
+The average number of people carrying drinks per observation is `r round(mean_people, 2)`.
+
+The maximum number of people carrying drinks observed was `r max_people`.
+
+The bar charts below show the distribution of drink types and drink temperatures across the observations.
+
+```{r}
+ggplot(latest_data, aes(x = drink_type)) +
+  geom_bar() +
+  labs(
+    title = "Observed drink types on campus",
+    x = "Drink type",
+    y = "Count"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+```{r}
+ggplot(latest_data, aes(x = drink_temp)) +
+  geom_bar() +
+  labs(
+    title = "Hot vs cold drinks observed",
+    x = "Drink temperature",
+    y = "Count"
+  ) +
+  theme_minimal()
+
+```
